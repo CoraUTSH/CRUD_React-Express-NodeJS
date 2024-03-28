@@ -1,0 +1,18 @@
+.altaEstudiantes{    
+    height: 100vh;
+}
+.register-container{
+    display: flex;
+    justify-content: space-between;
+}
+.container-data{
+    margin-top:25px;    
+    padding: 10px;
+}
+.container-control{
+   margin-top:15px;
+}
+.imagen-reg img{
+    width: 100%;
+    margin: auto;   
+}
