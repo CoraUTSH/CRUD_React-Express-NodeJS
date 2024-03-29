@@ -1,0 +1,12 @@
+iniciar el servidor
+npm init -y
+
+instalar paquetes BackEnd:
+express mysql2 nodemon cors body-parser
+
+paquetes frontEnd:
+bootstrap, axios
+
+
+configurar package.json
+

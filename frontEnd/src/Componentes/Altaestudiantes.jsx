@@ -1,12 +1,39 @@
-import React from 'react'
-import './../assets/css/Altaestudiantes.css'
-
+import React, { useState } from 'react';
+import './../assets/css/Altaestudiantes.css';
+import axios from 'axios';
+//Crear endpoint del servidor
+const endpoint="http://localhost:3000";
 const Altaestudiantes = () => {
+    //Creación de variables para los estados
+    const [matricula,setMatricula]=useState();
+    const [nombre,setNombre]=useState();
+    const [direccion,setDireccion]=useState();
+    const [alumnos, setAlumnos]=useState([]);
+
+    //Crearemos función para agregar alumnos
+    const AgregarAlumnos=()=>{
+        axios.post(endpoint+"/create",{
+            matricula:matricula,
+            nombre:nombre,
+            direccion:direccion
+        })
+        .then((response)=>{
+            alert(response.data)
+            ObtenerDatos()
+        })
+    }
+
+    //Obtener los registros
+    const ObtenerDatos=()=>{
+        axios.get(endpoint+'/alumnos')
+        .then((resp)=>{
+            setAlumnos(resp.data);            
+        });                        
+    }
+ObtenerDatos()
     return (
         <div className='container altaEstudiantes'>
             <div className="register-container">
-
-
                 <div className="card">
                     <div className="card-header">
                         <h2>Registro de Estudiantes</h2>
@@ -16,17 +43,19 @@ const Altaestudiantes = () => {
                             <img src="./../src/assets/imagenes/4.jpg" alt="" />
                         </div>
                         <div className="card-body col-9">
-
                             <div className="container-control">
-                                <input className="form-control form-control-lg" type="number" placeholder="2020123" aria-label=".form-control-lg" />
+                                <input className="form-control form-control-lg" onChange={(e)=>{setMatricula(e.target.value)}} type="number" placeholder="2020123" aria-label=".form-control-lg" />
+                                
                             </div>
                             <div className="container-control">
-                                <input className="form-control form-control-lg" type="text" placeholder="Miguel Ángel Najera Pablo" aria-label=".form-control-lg example" />
+                                <input className="form-control form-control-lg" onChange={(e)=>{setNombre(e.target.value)}} type="text" placeholder="Miguel Ángel Najera Pablo" aria-label=".form-control-lg example" />
+                               
                             </div>
                             <div className="container-control">
-                                <input className="form-control form-control-lg" type="text" placeholder="Calle: Guzmán " aria-label=".form-control-lg example" />
+                                <input className="form-control form-control-lg" type="text" onChange={(e)=>{setDireccion(e.target.value)}} placeholder="Calle: Guzmán " aria-label=".form-control-lg example" />
+                               
                             </div>
-                            <button className='btn btn-success form-control mt-3'>Guardar registro</button>
+                            <button onClick={AgregarAlumnos} className='btn btn-success form-control mt-3'>Guardar registro</button>
                         </div>
                     </div>
 
@@ -48,23 +77,19 @@ const Altaestudiantes = () => {
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
+                       { alumnos.map((alumno,key)=>{
+                            return (
+                                 <tr key={alumno.Matricula}>
+                            <th scope="row">{alumno.Matricula}</th>
+                            <td>{alumno.Nombre}</td>
+                            <td>{alumno.Direccion}</td>
                             <td>@mdo</td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
+                            )
+                        })}
+
+                       
+                    
                     </tbody>
                 </table>
             </div>
